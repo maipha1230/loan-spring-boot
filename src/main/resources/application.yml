@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/loan
+    username: loan_user
+    password: loan_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: 8sdf7g3hsdfh7234h9asdh98s7dfg23r98as7df9g2asdg7asfdg7a8sd9f7g23
+  expiration: 3600000  # 1 hour in ms
