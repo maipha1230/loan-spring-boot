@@ -99,6 +99,14 @@ public class LoanController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Loan Not Found");
             }
 
+            if (loanRequest.getMinAmount().compareTo(loanRequest.getMaxAmount()) > 0) {
+                throw new CustomException(HttpStatus.BAD_REQUEST, "Min Amount Must Less Than Max Amount");
+            }
+
+            if (loanRequest.getMinRange().compareTo(loanRequest.getMaxRange()) > 0) {
+                throw new CustomException(HttpStatus.BAD_REQUEST, "Min Range Must Less Than Max Range");
+            }
+
             LoanEntity loan = existLoan.get();
             loan.setLoanName(loanRequest.getLoanName());
             loan.setMinAmount(loanRequest.getMinAmount());
