@@ -31,7 +31,7 @@ public class CustomerController {
         try {
             List<CustomerEntity> customers = customerService.findAllCustomerRaw();
 
-            BaseResponse<List<CustomerEntity>> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Delete Customer Success", customers);
+            BaseResponse<List<CustomerEntity>> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Get List Customer Success", customers);
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
         } catch (Exception e) {
             if (e instanceof CustomException customException) {
@@ -49,7 +49,7 @@ public class CustomerController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Customer Not Found");
             }
 
-            BaseResponse<CustomerEntity> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Delete Customer Success", existCustomer.get());
+            BaseResponse<CustomerEntity> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Get Information Customer Success", existCustomer.get());
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
         } catch (Exception e) {
             if (e instanceof CustomException customException) {
@@ -67,7 +67,7 @@ public class CustomerController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Customer Email Already Exists");
             }
 
-            if (customerService.findByEmail(customerRequest.getPhone()).isPresent()) {
+            if (customerService.findByPhone(customerRequest.getPhone()).isPresent()) {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Customer Phone Already Exists");
             }
 
@@ -80,7 +80,7 @@ public class CustomerController {
             customer.setCreatedBy(username);
             customer.setUpdatedBy(username);
 
-            CustomerEntity savedCustomer = customerService.createUser(customer);
+            CustomerEntity savedCustomer = customerService.createCustomer(customer);
 
             BaseResponse<CustomerEntity> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Create Customer Success", savedCustomer);
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
@@ -109,7 +109,7 @@ public class CustomerController {
             customer.setAddress(customerRequest.getAddress());
             customer.setUpdatedBy(username);
 
-            CustomerEntity savedCustomer = customerService.updateUser(customer);
+            CustomerEntity savedCustomer = customerService.updateCustomer(customer);
 
             BaseResponse<CustomerEntity> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "Update Customer Success", savedCustomer);
             return new ResponseEntity<>(successResponse, HttpStatus.OK);

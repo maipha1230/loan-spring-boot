@@ -16,12 +16,12 @@ public class CustomerService {
     private CustomerRepository customerRepository;
 
     // Create User
-    public CustomerEntity createUser(CustomerEntity user) {
+    public CustomerEntity createCustomer(CustomerEntity user) {
         return customerRepository.save(user);
     }
 
     // Update User (same as create, just re-save)
-    public CustomerEntity updateUser(CustomerEntity user) {
+    public CustomerEntity updateCustomer(CustomerEntity user) {
         return customerRepository.save(user);
     }
 
