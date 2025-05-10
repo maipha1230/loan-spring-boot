@@ -53,7 +53,7 @@ public class AuthController {
 
             BaseResponse<UserEntity> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "User Registered Successfully", null);
             return new ResponseEntity<>(successResponse, HttpStatus.OK);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             if (e instanceof CustomException customException) {
                 throw customException; // rethrow with its own status and message
             }
@@ -73,9 +73,11 @@ public class AuthController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Invalid Username or Password");
             }
 
-            String token = jwtUtils.generateToken(user.get().getUsername(), user.get().getId());
+            String accessToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 360000);
+            String refreshToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 360000 * 24);
             Map<String, String> responseBody = new HashMap<>();
-            responseBody.put("accessToken", token);
+            responseBody.put("accessToken", accessToken);
+            responseBody.put("refreshToken", refreshToken);
 
 
             BaseResponse<Map<String, String>> successResponse = new BaseResponse<>(HttpStatus.OK.value(), "User Login Successfully", responseBody);
