@@ -73,8 +73,8 @@ public class AuthController {
                 throw new CustomException(HttpStatus.BAD_REQUEST, "Invalid Username or Password");
             }
 
-            String accessToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 360000);
-            String refreshToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 360000 * 24);
+            String accessToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 3600000);
+            String refreshToken = jwtUtils.generateToken(user.get().getUsername(), user.get().getId(), 3600000 * 24);
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("accessToken", accessToken);
             responseBody.put("refreshToken", refreshToken);

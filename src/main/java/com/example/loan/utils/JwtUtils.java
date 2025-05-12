@@ -36,16 +36,18 @@ public class JwtUtils {
 
     public String extractUsername(String token) {
         try {
-
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
-        }catch (Exception e){
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Token expired");
+        } catch (JwtException e) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Invalid token");
+        } catch (Exception e){
             throw new CustomException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
-
         }
     }
 
@@ -62,11 +64,20 @@ public class JwtUtils {
     }
 
     public Long extractUserId(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("userId", Long.class);
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("userId", Long.class);
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Token expired");
+        } catch (JwtException e) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Invalid token");
+        } catch (Exception e){
+            throw new CustomException(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        }
+
     }
 }

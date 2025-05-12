@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,5 +47,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<Object>>  handleAll(Exception ex) {
         BaseResponse<Object> response = new BaseResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<BaseResponse<Object>> handleNotFound(NoHandlerFoundException ex) {
+        BaseResponse<Object> response = new BaseResponse<>(
+                HttpStatus.NOT_FOUND.value(),
+                "Path not found: " + ex.getRequestURL(),
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
